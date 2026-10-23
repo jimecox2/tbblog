@@ -1,6 +1,7 @@
 import './globals.css'
 import Script from 'next/script'
 import AppNavbar from '@/components/AppNavbar'
+import AuthProvider from '@/components/AuthProvider'
 import { BLOG_URL, BROWSER_CONFIG } from '@/config/site'
 
 // Addresses come from the server's environment at run time (config/site.js), so no page is built ahead.
@@ -39,8 +40,10 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-screen bg-gray-50 font-sans antialiased">
-        <AppNavbar />
-        <main>{children}</main>
+        <AuthProvider>
+          <AppNavbar />
+          <main>{children}</main>
+        </AuthProvider>
       </body>
     </html>
   )

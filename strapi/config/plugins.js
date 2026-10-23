@@ -24,10 +24,11 @@ const deniedTypes = [
 module.exports = () => ({
   'users-permissions': {
     config: {
-      jwtManagement: 'refresh',
-      sessions: {
-        httpOnly: true,
-      },
+      // The blog (web/) signs editors in from its server and keeps the Strapi token in its own session,
+      // so one plain token per sign-in suits it better than refresh tokens in browser cookies.
+      // Must match the session length in web/auth.js.
+      jwtManagement: 'legacy-support',
+      jwt: { expiresIn: '7d' },
     },
   },
   upload: {

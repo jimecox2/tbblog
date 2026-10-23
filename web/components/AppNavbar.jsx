@@ -2,12 +2,13 @@
 
 // Main navigation for the Timebars blog. Copied from helpapp's AppNavbar (same dark-blue gradient), with
 // "Blog" in place of "Cloud". Every environment but PROD (TB_ENVIRONMENT) gets a dark red bar with its name.
-// Editor sign-in is added with the editor pages.
+// Signed-in editors also get Articles (/editor) and Sign Out; everyone else sees Editor Sign In.
 
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { signOut, useSession } from 'next-auth/react'
 import { Menu, X } from 'lucide-react'
 import { WWW_URL, TB_ENVIRONMENT, IS_PROD } from '@/config/site'
 import { cn } from '@/lib/utils'
@@ -31,8 +32,10 @@ function NavLink({ item, pathname, onClick, className }) {
 
 export default function AppNavbar() {
   const pathname = usePathname() || '/'
+  const { data: session, status } = useSession()
   const [mobileOpen, setMobileOpen] = useState(false)
   const close = () => setMobileOpen(false)
+  const items = session ? [...NAV.slice(0, 2), { label: 'Articles', href: '/editor' }, ...NAV.slice(2)] : NAV
 
   return (
     <nav
@@ -63,7 +66,7 @@ export default function AppNavbar() {
               )}
             </Link>
             <div className="ml-2 hidden items-center gap-0.5 md:flex">
-              {NAV.map(item => (
+              {items.map(item => (
                 <NavLink
                   key={item.href}
                   item={item}
@@ -73,12 +76,32 @@ export default function AppNavbar() {
               ))}
             </div>
           </div>
+
+          <div className="flex items-center gap-2">
+            {session ? (
+              <>
+                <span className="hidden max-w-[12rem] truncate text-sm text-blue-100 lg:inline">{session.user?.name || session.user?.email}</span>
+                <button
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className="rounded-md bg-white/15 px-3 py-2 text-sm text-white hover:bg-white/25"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              status !== 'loading' && (
+                <Link href="/auth/signin" className="rounded-md bg-white px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-50">
+                  Editor Sign In
+                </Link>
+              )
+            )}
+          </div>
         </div>
       </div>
 
       {mobileOpen && (
         <div className="border-t border-white/20 px-2 pb-3 pt-2 md:hidden">
-          {NAV.map(item => (
+          {items.map(item => (
             <NavLink
               key={item.href}
               item={item}

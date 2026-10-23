@@ -2,7 +2,7 @@
 // Raw HTML in the markdown is shown as text, and only http(s), mailto, relative and #anchor URLs are kept.
 // Images uploaded to Strapi (/uploads/...) are served from Strapi's public address.
 import { Marked } from 'marked'
-import { STRAPI_MEDIA_URL } from '@/lib/strapi'
+import { STRAPI_MEDIA_URL } from '@/lib/strapiUrl'
 
 const escapeHtml = s =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')

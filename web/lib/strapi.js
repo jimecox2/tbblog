@@ -4,15 +4,7 @@
 // Strapi's webhook calls /api/revalidate, which clears the tag, so the change shows on the next visit
 // without a rebuild.
 import 'server-only'
-
-const pick = (value, fallback) =>
-  typeof value === 'string' && value.trim() ? value.trim().replace(/\/+$/, '') : fallback
-
-// e.g. http://localhost:1339/api (dev), http://tbblog-strapi:1339/api (container)
-export const STRAPI_URL = pick(process.env.STRAPI_URL, 'http://localhost:1339/api')
-
-// Address the browser uses for uploaded images (/uploads/...). Defaults to STRAPI_URL without /api.
-export const STRAPI_MEDIA_URL = pick(process.env.STRAPI_MEDIA_URL, STRAPI_URL.replace(/\/api$/, ''))
+import { STRAPI_URL } from '@/lib/strapiUrl'
 
 export const PAGE_SIZE = 20
 export const ARTICLES_TAG = 'articles'

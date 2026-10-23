@@ -19,3 +19,11 @@ webhook in Strapi: Settings → Webhooks → Create.
 - URL: `http://localhost:3011/api/revalidate` in dev (the blog's address on the server)
 - Header: `Authorization` = `Bearer <REVALIDATE_SECRET from .env.local>`
 - Events: Entry publish, unpublish, update, delete
+
+## Editors
+
+Editors sign in at `/auth/signin` with a Strapi user (Content Manager → User) whose role is in `EDITOR_ROLES`
+(default `Content Editor`). That role needs, under Settings → Users & Permissions → Roles:
+
+- Article: find, findOne, create, update, delete
+- Users-permissions → User: `me`; Role: `find` (so the blog can read the user's role)
