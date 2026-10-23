@@ -1,0 +1,41 @@
+# tbblog on one server: Strapi (tbblog-strapi) and the blog (tbblog-web), on the shared network tbnet with tbpgdb.
+# Copy this folder to the server (e.g. ~/docker/tbblog, or into the tbown package), fill the two env files,
+# set TBBLOG_TAG in .env, then: docker compose up -d
+#
+#   strapi.env.local  - Strapi settings and secrets (from ../strapi/.env.example)
+#   web.env.local     - blog settings and secrets (from ../web/.env.example)
+#   .env              - only TBBLOG_TAG=2026.10.23 (the image tag to run)
+services:
+  tbblog-strapi:
+    image: jimecox807/tbblog-strapi:${TBBLOG_TAG:?set TBBLOG_TAG in .env}
+    container_name: tbblog-strapi
+    restart: unless-stopped
+    env_file: strapi.env.local
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 1339
+    volumes:
+      - ./uploads:/opt/app/public/uploads
+    # The Strapi admin, for your LAN only (http://<server>:1339/admin). Never forward this port on the router.
+    ports:
+      - "1339:1339"
+    networks: [tbnet]
+
+  tbblog-web:
+    image: jimecox807/tbblog-web:${TBBLOG_TAG}
+    container_name: tbblog-web
+    restart: unless-stopped
+    env_file: web.env.local
+    environment:
+      NODE_ENV: production
+      STRAPI_URL: http://tbblog-strapi:1339/api
+    # The proxy sends blog traffic here
+    ports:
+      - "3011:3011"
+    depends_on: [tbblog-strapi]
+    networks: [tbnet]
+
+networks:
+  tbnet:
+    external: true

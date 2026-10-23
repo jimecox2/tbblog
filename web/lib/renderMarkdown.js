@@ -1,6 +1,6 @@
 // lib/renderMarkdown.js — article markdown -> HTML, server side, no DOM (rule from helpapp's renderGuide.js).
 // Raw HTML in the markdown is shown as text, and only http(s), mailto, relative and #anchor URLs are kept.
-// Images uploaded to Strapi (/uploads/...) are served from Strapi's public address.
+// Images uploaded to Strapi (/uploads/...) load through this site unless STRAPI_MEDIA_URL is set.
 import { Marked } from 'marked'
 import { STRAPI_MEDIA_URL } from '@/lib/strapiUrl'
 
@@ -28,7 +28,7 @@ const marked = new Marked({
     },
     image({ href, title, text }) {
       let url = safeUrl(href)
-      if (url.startsWith('/uploads/')) url = `${STRAPI_MEDIA_URL}${url}`
+      if (STRAPI_MEDIA_URL && url.startsWith('/uploads/')) url = `${STRAPI_MEDIA_URL}${url}`
       const tt = title ? ` title="${escapeHtml(title)}"` : ''
       return `<img src="${escapeHtml(url)}" alt="${escapeHtml(text)}"${tt} loading="lazy">`
     },
