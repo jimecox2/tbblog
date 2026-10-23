@@ -1,0 +1,15 @@
+node_modules
+.tmp
+.cache
+build
+dist
+.strapi
+.DS_Store
+.git
+# Never build a value into the image: every setting is read at run time
+.env
+.env.*
+public/uploads/*
+!public/uploads/.gitkeep
+README.md
+deploy-push-to-hub-secure.sh
