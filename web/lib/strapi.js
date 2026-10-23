@@ -26,7 +26,6 @@ function query(params) {
 
 async function get(path, params) {
   const res = await fetch(`${STRAPI_URL}${path}?${query(params)}`, {
-    cache: 'force-cache',
     next: { tags: [ARTICLES_TAG], revalidate: 3600 },
   })
   if (!res.ok) throw new Error(`Strapi ${path} answered ${res.status}`)

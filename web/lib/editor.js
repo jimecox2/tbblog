@@ -64,3 +64,24 @@ export async function listAllArticles() {
 export function deleteArticle(documentId) {
   return call(`/articles/${encodeURIComponent(documentId)}`, { method: 'DELETE' })
 }
+
+const EDITABLE = ['title', 'slug', 'description', 'category', 'authorName', 'body']
+
+// The latest saved version of one article (its draft), with publishedAt from the published version if any.
+export async function getArticleDraft(documentId) {
+  const id = encodeURIComponent(documentId)
+  const { data } = await call(`/articles/${id}?status=draft`)
+  const published = await call(`/articles/${id}?status=published&fields[0]=publishedAt`).catch(() => null)
+  return { ...data, publishedAt: published?.data?.publishedAt || null }
+}
+
+// Creates (no documentId) or updates an article. publish = true also publishes it; otherwise only the draft
+// is saved and the published version, if any, stays as it was.
+export async function saveArticle(documentId, fields, publish) {
+  const data = Object.fromEntries(EDITABLE.map(k => [k, fields[k] ?? null]))
+  const status = publish ? '?status=published' : ''
+  const res = documentId
+    ? await call(`/articles/${encodeURIComponent(documentId)}${status}`, { method: 'PUT', body: { data } })
+    : await call(`/articles${status}`, { method: 'POST', body: { data } })
+  return res.data
+}
