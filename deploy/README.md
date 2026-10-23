@@ -72,6 +72,25 @@ What comes across: articles, Strapi admin users, blog users and roles (Content E
 After the copy, check the webhook URL and secret in Strapi's settings match production. API tokens made on
 staging do not work on production (its salt differs); make new ones there if you need any.
 
-## 4. Proxy
+## 4. Proxy (tbproxy, Caddy on gmk1)
 
-`blogs.agile-pm-rm-ppm.com` must reach `http://192.168.1.205:3011` (gmk1). See the thread for the options.
+The router sends ports 80 and 443 to gmk1, where `tbproxy` (Caddy) answers and gets the HTTPS certificate.
+Add this block to tbproxy's Caddyfile (find the file with `docker inspect tbproxy --format '{{json .Mounts}}'`):
+
+```
+blogs.agile-pm-rm-ppm.com {
+	encode zstd gzip
+	reverse_proxy tbblog-web:3011
+}
+```
+
+`tbblog-web:3011` works when tbproxy is on the `tbnet` network (`docker network inspect tbnet` lists it); if not,
+use `192.168.1.205:3011`. Check and load it without a restart:
+
+```
+docker exec tbproxy caddy validate --config /etc/caddy/Caddyfile
+docker exec tbproxy caddy reload --config /etc/caddy/Caddyfile
+```
+
+Set `BLOG_URL=https://blogs.agile-pm-rm-ppm.com` in `web.env.local`. Strapi's port 1339 is not in the Caddyfile and
+is never forwarded on the router, so the admin stays on the LAN.
