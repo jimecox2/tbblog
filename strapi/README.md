@@ -6,7 +6,7 @@ Strapi 5 (Community Edition) for the Timebars blog. JavaScript, Postgres, Node 2
 
 1. On tbpgdb, create the blog's own database and user. Never use tbbe's `strapi` database: Strapi 5 would migrate it.
    ```sql
-   CREATE USER tbblog WITH PASSWORD '<password>';
+   CREATE USER tbblog WITH PASSWORD 'strapi2';
    CREATE DATABASE tbblog OWNER tbblog;
    ```
 2. `cp .env.example .env`, `chmod 600 .env`, fill in the password and the secrets (`openssl rand -base64 32` each).

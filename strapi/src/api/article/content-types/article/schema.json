@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "articles",
+  "info": {
+    "singularName": "article",
+    "pluralName": "articles",
+    "displayName": "Article"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": false
+    },
+    "description": {
+      "type": "text"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "category": {
+      "type": "enumeration",
+      "required": true,
+      "default": "Common",
+      "enum": [
+        "Agilebars",
+        "Agile Management",
+        "Costbars",
+        "Common",
+        "Project Management",
+        "Project Portfolio Management",
+        "Resource Management",
+        "Technology",
+        "Timebars"
+      ]
+    },
+    "authorName": {
+      "type": "string"
+    }
+  }
+}

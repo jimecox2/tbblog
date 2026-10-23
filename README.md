@@ -1,10 +1,15 @@
 # tbblog
 
-The Timebars blog: one repo, two apps, each with its own Dockerfile and image.
+git fetch origin
+git checkout claude/project-thread-mbovaq
+git pull origin claude/project-thread-mbovaq
 
-| Folder | What | Dev port |
-|---|---|---|
-| `strapi/` | Strapi 5 backend: articles, editors (Strapi roles) | 1339 |
-| `web/` | Next.js blog (coming next) | 3011 |
 
-See `strapi/README.md` to run Strapi in dev.
+# db setup 
+docker exec -it tbpgdb sh -c 'psql -U "$POSTGRES_USER" -d postgres'
+CREATE USER tbblog WITH PASSWORD 'strapi2';
+CREATE DATABASE tbblog OWNER tbblog;
+
+# make keys
+openssl rand -base64 32
+
