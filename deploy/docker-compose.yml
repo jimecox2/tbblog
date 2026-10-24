@@ -4,7 +4,7 @@
 #
 #   strapi.env.local  - Strapi settings and secrets (from ../strapi/.env.example)
 #   web.env.local     - blog settings and secrets (from ../web/.env.example)
-#   .env              - only TBBLOG_TAG=2026.10.23 (the image tag to run)
+#   .env              - TBBLOG_TAG=2026.10.24 (the image tag to run) and LISTEN_IP=<this server's LAN address>
 services:
   tbblog-strapi:
     image: jimecox807/tbblog-strapi:${TBBLOG_TAG:?set TBBLOG_TAG in .env}
@@ -17,9 +17,9 @@ services:
       PORT: 1339
     volumes:
       - ./uploads:/opt/app/public/uploads
-    # The Strapi admin, for your LAN only (http://<server>:1339/admin). Never forward this port on the router.
+    # The Strapi admin, for your LAN only (http://<LISTEN_IP>:1339/admin). Never forward this port on the router.
     ports:
-      - "1339:1339"
+      - "${LISTEN_IP:-127.0.0.1}:1339:1339"
     networks: [tbnet]
 
   tbblog-web:
@@ -30,9 +30,9 @@ services:
     environment:
       NODE_ENV: production
       STRAPI_URL: http://tbblog-strapi:1339/api
-    # The proxy sends blog traffic here
+    # tbproxy reaches the blog over tbnet (tbblog-web:3011) on its own server, and on LISTEN_IP:3011 from another one
     ports:
-      - "3011:3011"
+      - "${LISTEN_IP:-127.0.0.1}:3011:3011"
     depends_on: [tbblog-strapi]
     networks: [tbnet]
 

@@ -5,7 +5,12 @@ Two containers on the shared Docker network `tbnet`, next to `tbpgdb`:
 | Container | Image | Port | Who reaches it |
 |---|---|---|---|
 | `tbblog-strapi` | `jimecox807/tbblog-strapi:<tag>` | 1339 | the blog (over tbnet), and you on the LAN for `/admin` |
-| `tbblog-web` | `jimecox807/tbblog-web:<tag>` | 3011 | the proxy (public blog) |
+| `tbblog-web` | `jimecox807/tbblog-web:<tag>` | 3011 | tbproxy (public blog) |
+
+| Server | Environment | Blog address | LISTEN_IP |
+|---|---|---|---|
+| gmk1 | PROD | https://blog.agile-pm-rm-ppm.com | 192.168.1.205 |
+| lser | STAGING | https://blogs.agile-pm-rm-ppm.com | 192.168.1.9 |
 
 Strapi is never put on the internet. Article images (`/uploads/...`) are served through the blog.
 
@@ -16,14 +21,14 @@ cd strapi && ./deploy-push-to-hub-secure.sh     # type the tag, e.g. 2026.10.23
 cd ../web && ./deploy-push-to-hub-secure.sh     # use the same tag
 ```
 
-## 2. First install on a server (gmk1)
+## 2. First install on a server
 
 ```
-mkdir -p ~/docker/tbblog && cd ~/docker/tbblog
+mkdir -p ~/docker/tbApps/tbblog && cd ~/docker/tbApps/tbblog
 # copy docker-compose.yml, strapi.env.example, web.env.example from this folder
 cp strapi.env.example strapi.env.local && cp web.env.example web.env.local && chmod 600 *.env.local
 # fill both files: secrets (openssl rand -base64 32), database password, addresses
-echo TBBLOG_TAG=2026.10.23 > .env
+printf 'TBBLOG_TAG=2026.10.24\nLISTEN_IP=192.168.1.205\n' > .env     # lser: LISTEN_IP=192.168.1.9
 mkdir uploads && sudo chown 1000:1000 uploads      # Strapi runs as user "node" (uid 1000) and writes here
 docker compose up -d
 ```
@@ -62,9 +67,9 @@ docker exec -it tbpgdb sh -c 'psql -U "$POSTGRES_USER" -d postgres'
 Then load the copy (stop Strapi first; `--clean` replaces what is there):
 
 ```
-cd ~/docker/tbblog && docker compose stop tbblog-strapi
+cd ~/docker/tbApps/tbblog && docker compose stop tbblog-strapi
 docker exec -i tbpgdb pg_restore -U tbblog -d tbblog --clean --if-exists --no-owner --role=tbblog < ~/tbblog.dump
-tar xzf ~/tbblog-uploads.tgz -C ~/docker/tbblog/uploads && sudo chown -R 1000:1000 ~/docker/tbblog/uploads
+tar xzf ~/tbblog-uploads.tgz -C ~/docker/tbApps/tbblog/uploads && sudo chown -R 1000:1000 ~/docker/tbApps/tbblog/uploads
 docker compose start tbblog-strapi
 ```
 
@@ -74,23 +79,21 @@ staging do not work on production (its salt differs); make new ones there if you
 
 ## 4. Proxy (tbproxy, Caddy on gmk1)
 
-The router sends ports 80 and 443 to gmk1, where `tbproxy` (Caddy) answers and gets the HTTPS certificate.
-Add this block to tbproxy's Caddyfile (find the file with `docker inspect tbproxy --format '{{json .Mounts}}'`):
+One proxy for the LAN: the router sends ports 80 and 443 to gmk1, where `tbproxy` answers every name and gets the
+HTTPS certificates. Its Caddyfile (`~/docker/tbApps/proxy/Caddyfile`, made by tbown) has:
 
 ```
-blogs.agile-pm-rm-ppm.com {
+blog.agile-pm-rm-ppm.com {          # PROD, same server: over tbnet
+	import tb_common
 	encode zstd gzip
 	reverse_proxy tbblog-web:3011
 }
+
+blogs.agile-pm-rm-ppm.com {         # STAGING on lser: over the LAN, to LISTEN_IP
+	import tb_staging
+	encode zstd gzip
+	reverse_proxy 192.168.1.9:3011
+}
 ```
 
-`tbblog-web:3011` works when tbproxy is on the `tbnet` network (`docker network inspect tbnet` lists it); if not,
-use `192.168.1.205:3011`. Check and load it without a restart:
-
-```
-docker exec tbproxy caddy validate --config /etc/caddy/Caddyfile
-docker exec tbproxy caddy reload --config /etc/caddy/Caddyfile
-```
-
-Set `BLOG_URL=https://blogs.agile-pm-rm-ppm.com` in `web.env.local`. Strapi's port 1339 is not in the Caddyfile and
-is never forwarded on the router, so the admin stays on the LAN.
+Strapi's port 1339 is in no Caddyfile and is never forwarded on the router, so the admin stays on the LAN.
