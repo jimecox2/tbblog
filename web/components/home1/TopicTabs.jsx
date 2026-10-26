@@ -33,7 +33,7 @@ export default function TopicTabs({ topics }) {
       <div role="tabpanel" className="mt-6">
         <h3 className="text-xl font-semibold text-gray-900">{current?.category}</h3>
         {current?.posts.length ? (
-          <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {current.posts.map(p => <Home1Card key={p.id} post={p} />)}
           </div>
         ) : (

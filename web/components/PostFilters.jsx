@@ -17,13 +17,13 @@ export function readFilters(searchParams) {
 
 export function PostFilterForm({ basePath, q, category, sort, hash = '' }) {
   return (
-    <form action={`${basePath}${hash}`} className="grid grid-cols-1 gap-3 rounded-lg bg-white p-4 shadow-sm sm:grid-cols-[1fr_auto_auto_auto]">
+    <form action={`${basePath}${hash}`} className="flex flex-wrap gap-3 rounded-lg bg-white p-4 shadow-sm">
       <input
         type="search"
         name="q"
         defaultValue={q}
         placeholder="Search titles and descriptions"
-        className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-tbBlue2 focus:outline-none"
+        className="min-w-0 flex-1 basis-56 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-tbBlue2 focus:outline-none"
       />
       <select name="category" defaultValue={category} className="rounded-md border border-gray-300 px-3 py-2 text-sm">
         <option value="">All categories</option>
