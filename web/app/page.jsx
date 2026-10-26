@@ -2,8 +2,10 @@
 //   Latest Posts      the four newest posts
 //   Explore by topic  a tab per category with its four newest posts
 //   then a link to All Posts by Category (/posts)
-// with the blog's intro and the author's bio (BlogSidebar) down the right side, one card wide.
+// under the banner (BlogBanner), with the blog's intro and the author's bio (BlogSidebar) down the
+// right side, one card wide.
 import Link from 'next/link'
+import BlogBanner from '@/components/BlogBanner'
 import BlogSidebar from '@/components/BlogSidebar'
 import PostCard from '@/components/PostCard'
 import TopicTabs from '@/components/TopicTabs'
@@ -22,13 +24,9 @@ export default async function HomePage() {
 
   return (
     <div className="bg-gradient-to-b from-[#eef1fb] via-[#f5f6fc] to-white">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <header>
-          <h1 className="text-4xl font-bold tracking-tight text-tbBlue sm:text-5xl">The Timebars Blog</h1>
-          <p className="mt-3 text-lg text-gray-600">Insights on agile, project, portfolio and resource management.</p>
-        </header>
-
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <BlogBanner />
+      <div className="mx-auto max-w-6xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <section aria-labelledby="latest-posts">
               <h2 id="latest-posts" className="text-3xl font-bold tracking-tight text-gray-900">Latest Posts</h2>
