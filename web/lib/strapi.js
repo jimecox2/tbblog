@@ -47,15 +47,16 @@ export async function getRecentArticles() {
 }
 
 // One page of posts. q matches title or description; sort is 'date' (newest first) or 'category'.
-export async function getArticles({ q = '', category = '', sort = 'date', page = 1 } = {}) {
+// withBody adds the markdown body (for cards that show an excerpt of it).
+export async function getArticles({ q = '', category = '', sort = 'date', page = 1, pageSize = PAGE_SIZE, withBody = false } = {}) {
   const filters = {}
   if (q) filters.$or = [{ title: { $containsi: q } }, { description: { $containsi: q } }]
   if (category) filters.category = { $eq: category }
   const { data, meta } = await get('/articles', {
-    fields: CARD_FIELDS,
+    fields: withBody ? [...CARD_FIELDS, 'body'] : CARD_FIELDS,
     filters,
     sort: sort === 'category' ? ['category:asc', 'publishedAt:desc'] : ['publishedAt:desc'],
-    pagination: { page, pageSize: PAGE_SIZE },
+    pagination: { page, pageSize },
   })
   return { articles: data, pagination: meta.pagination }
 }
