@@ -1,30 +1,23 @@
 // "/" — the home page, laid out like the PMI blog (pmi.org/blog), with our nav and colours and no images:
 //   Latest Posts      the four newest posts
 //   Explore by topic  a tab per category with its four newest posts
-//   All Blog Posts    the All Posts filters and paging, two columns, with a 500-character body excerpt
+//   then a link to All Posts by Category (/posts)
 // with the blog's intro and the author's bio (BlogSidebar) down the right side, one card wide.
-// The filters keep their state in the URL (/?q=…&category=…&sort=…&page=…#all-posts).
+import Link from 'next/link'
 import BlogSidebar from '@/components/BlogSidebar'
 import PostCard from '@/components/PostCard'
-import { PostCount, PostFilterForm, PostPager, readFilters } from '@/components/PostFilters'
 import TopicTabs from '@/components/TopicTabs'
 import { CATEGORIES } from '@/lib/categories'
 import { toCardPost as toPost } from '@/lib/cardPost'
 import { getArticles } from '@/lib/strapi'
 
-const BASE = '/'
-const HASH = '#all-posts'
-
-export default async function HomePage({ searchParams }) {
-  const filters = readFilters(searchParams)
-
-  const [latest, topics, all] = await Promise.all([
+export default async function HomePage() {
+  const [latest, topics] = await Promise.all([
     getArticles({ pageSize: 4, withBody: true }),
     Promise.all(CATEGORIES.map(async category => {
       const { articles } = await getArticles({ category, pageSize: 4, withBody: true })
       return { category, posts: articles.map(toPost(160)) }
     })),
-    getArticles({ ...filters, withBody: true }),
   ])
 
   return (
@@ -55,25 +48,11 @@ export default async function HomePage({ searchParams }) {
             </div>
           </section>
 
-          <section id="all-posts" className="mt-16 scroll-mt-24" aria-labelledby="all-blog-posts">
-            <h2 id="all-blog-posts" className="text-2xl font-bold text-gray-900">All Blog Posts</h2>
-            <div className="mt-6">
-              <PostFilterForm basePath={BASE} hash={HASH} {...filters} />
-            </div>
-            <div className="mt-6">
-              <PostCount pagination={all.pagination} />
-            </div>
-            <div className="mt-4">
-              {all.articles.length ? (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  {all.articles.map(toPost(500)).map(p => <PostCard key={p.id} post={p} wide />)}
-                </div>
-              ) : (
-                <p className="text-gray-500">No posts match.</p>
-              )}
-            </div>
-            <PostPager basePath={BASE} hash={HASH} {...filters} pageCount={all.pagination.pageCount} />
-          </section>
+          <div className="mt-12">
+            <Link href="/posts" className="inline-block rounded-md bg-tbBlue px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-800">
+              All Posts by Category →
+            </Link>
+          </div>
         </div>
 
         <BlogSidebar />

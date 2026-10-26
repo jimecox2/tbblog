@@ -37,7 +37,7 @@ export default async function PostsPage({ searchParams }) {
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-tbBlue">All Posts</h1>
         <div className="mt-6">
-          <PostFilterForm basePath={BASE} q={q} category={category} showSort={false} />
+          <PostFilterForm basePath={BASE} q={q} category={category} />
         </div>
         {!bands.length && <p className="mt-8 text-gray-500">No posts match.</p>}
       </div>
@@ -50,7 +50,7 @@ export default async function PostsPage({ searchParams }) {
           moreHref={category ? null : `${BASE}?${new URLSearchParams({ ...(q && { q }), category: b.category })}`}
           dark={i % 2 === 0}
         >
-          {category && <PostPager basePath={BASE} q={q} category={category} sort="date" page={page} pageCount={pageCount} />}
+          {category && <PostPager basePath={BASE} q={q} category={category} page={page} pageCount={pageCount} />}
         </CategorySection>
       ))}
     </div>

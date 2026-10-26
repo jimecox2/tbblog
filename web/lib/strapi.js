@@ -32,16 +32,16 @@ async function get(path, params) {
   return res.json()
 }
 
-// One page of posts. q matches title or description; sort is 'date' (newest first) or 'category'.
+// One page of posts, newest first. q matches title or description.
 // withBody adds the markdown body (for cards that show an excerpt of it).
-export async function getArticles({ q = '', category = '', sort = 'date', page = 1, pageSize = PAGE_SIZE, withBody = false } = {}) {
+export async function getArticles({ q = '', category = '', page = 1, pageSize = PAGE_SIZE, withBody = false } = {}) {
   const filters = {}
   if (q) filters.$or = [{ title: { $containsi: q } }, { description: { $containsi: q } }]
   if (category) filters.category = { $eq: category }
   const { data, meta } = await get('/articles', {
     fields: withBody ? [...CARD_FIELDS, 'body'] : CARD_FIELDS,
     filters,
-    sort: sort === 'category' ? ['category:asc', 'publishedAt:desc'] : ['publishedAt:desc'],
+    sort: ['publishedAt:desc'],
     pagination: { page, pageSize },
   })
   return { articles: data, pagination: meta.pagination }
