@@ -15,7 +15,7 @@ const PROBLEMS = [
   { slug: 'the-legacy-pm-system-problem', label: 'Your project system cannot keep up with the organisation' },
 ]
 
-const box = 'rounded-lg border border-gray-100 bg-white p-6 shadow-md'
+const box = 'rounded-2xl bg-white p-7 shadow-[0_2px_12px_rgba(16,24,64,0.06)] ring-1 ring-black/[0.03]'
 const heading = 'text-xs font-semibold uppercase tracking-wide text-tbBlue2'
 const link = 'font-medium text-tbBlue2 hover:underline'
 

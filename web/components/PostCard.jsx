@@ -9,20 +9,25 @@ export function CategoryBadge({ category }) {
   return <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-tbBlue">{category}</span>
 }
 
+// Soft, rounded, airy (after pmi.org/blog): the whole card is the link and lifts on hover.
 export default function PostCard({ post, wide = false }) {
   return (
-    <article className="flex h-full flex-col rounded-lg border border-gray-100 bg-white p-6 shadow-md transition hover:-translate-y-0.5 hover:shadow-xl">
-      <p className="text-xs font-semibold uppercase tracking-wide text-tbBlue2">{post.category || 'Common'}</p>
-      <h3 className={`mt-2 font-semibold leading-snug text-gray-900 ${wide ? 'text-xl' : 'text-lg'}`}>
-        <Link href={post.href} className="hover:text-tbBlue">{post.title}</Link>
+    <Link
+      href={post.href}
+      className="group flex h-full flex-col rounded-2xl bg-white p-7 shadow-[0_2px_12px_rgba(16,24,64,0.06)] ring-1 ring-black/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(16,24,64,0.12)]"
+    >
+      <span className="self-start rounded-full bg-tbBlue/[0.07] px-3 py-1 text-xs font-semibold text-tbBlue">{post.category || 'Common'}</span>
+      <h3 className={`mt-4 font-semibold leading-snug tracking-tight text-gray-900 transition-colors group-hover:text-tbBlue ${wide ? 'text-2xl' : 'text-xl'}`}>
+        {post.title}
       </h3>
-      <p className="mt-2 text-sm font-bold text-gray-800">
+      <p className="mt-3 text-sm font-semibold text-gray-900">
         <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
       </p>
-      {post.summary && <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-600">{post.summary}</p>}
-      <Link href={post.href} className="mt-4 text-sm font-medium text-tbBlue2 hover:underline">
-        Read Post →
-      </Link>
-    </article>
+      {post.summary && <p className="mt-3 line-clamp-4 flex-1 text-[15px] leading-relaxed text-gray-600">{post.summary}</p>}
+      <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-tbBlue">
+        Read Post
+        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+      </span>
+    </Link>
   )
 }

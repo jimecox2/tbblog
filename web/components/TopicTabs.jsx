@@ -21,7 +21,7 @@ export default function TopicTabs({ topics }) {
               aria-selected={selected}
               onClick={() => setActive(t.category)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-                selected ? 'bg-tbBlue text-white shadow' : 'bg-white text-gray-700 shadow-sm hover:bg-blue-50 hover:text-tbBlue'
+                selected ? 'bg-tbBlue text-white shadow' : 'bg-white text-gray-700 shadow-sm ring-1 ring-black/[0.04] hover:bg-blue-50 hover:text-tbBlue'
               }`}
             >
               {t.category}
