@@ -1,4 +1,4 @@
-// A /home2 post, styled after github.blog's section posts with no images: category label, title,
+// A post in a category band (CategorySection), styled after github.blog's section posts with no images: category label, title,
 // excerpt, then author and date. `featured` is the large first post of a section.
 import Link from 'next/link'
 import { formatDate } from '@/lib/format'

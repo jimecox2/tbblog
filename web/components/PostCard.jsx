@@ -1,6 +1,7 @@
-// One post as a raised card: date and category, title, description, Read more. No images or icons.
+// A post card, laid out like the PMI blog's: category label, title, bold date, a plain-text excerpt
+// of the body, and Read Post. No images. Takes a prepared post ({ id, href, title, category, publishedAt,
+// summary }) so it can render inside the topic tabs (a client component).
 import Link from 'next/link'
-import { articleHref } from '@/lib/strapi'
 import { formatDate } from '@/lib/format'
 
 export function CategoryBadge({ category }) {
@@ -8,29 +9,20 @@ export function CategoryBadge({ category }) {
   return <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-tbBlue">{category}</span>
 }
 
-export default function PostCard({ article }) {
-  const href = articleHref(article)
+export default function PostCard({ post, wide = false }) {
   return (
-    <article className="flex flex-col rounded-lg border border-gray-100 bg-white p-6 shadow-md transition hover:-translate-y-0.5 hover:shadow-xl">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
-        <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
-        <CategoryBadge category={article.category} />
-      </div>
-      <h2 className="mt-3 text-lg font-semibold leading-snug text-gray-900">
-        <Link href={href} className="hover:text-tbBlue">{article.title}</Link>
-      </h2>
-      {article.description && <p className="mt-2 line-clamp-3 flex-1 text-sm text-gray-600">{article.description}</p>}
-      <Link href={href} className="mt-4 text-sm font-medium text-tbBlue2 hover:underline">
-        Read more →
+    <article className="flex h-full flex-col rounded-lg border border-gray-100 bg-white p-6 shadow-md transition hover:-translate-y-0.5 hover:shadow-xl">
+      <p className="text-xs font-semibold uppercase tracking-wide text-tbBlue2">{post.category || 'Common'}</p>
+      <h3 className={`mt-2 font-semibold leading-snug text-gray-900 ${wide ? 'text-xl' : 'text-lg'}`}>
+        <Link href={post.href} className="hover:text-tbBlue">{post.title}</Link>
+      </h3>
+      <p className="mt-2 text-sm font-bold text-gray-800">
+        <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+      </p>
+      {post.summary && <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-600">{post.summary}</p>}
+      <Link href={post.href} className="mt-4 text-sm font-medium text-tbBlue2 hover:underline">
+        Read Post →
       </Link>
     </article>
-  )
-}
-
-export function PostGrid({ articles }) {
-  return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {articles.map(a => <PostCard key={a.documentId} article={a} />)}
-    </div>
   )
 }

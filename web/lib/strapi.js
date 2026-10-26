@@ -32,20 +32,6 @@ async function get(path, params) {
   return res.json()
 }
 
-// Posts published since the start of the day two months ago, newest first.
-export async function getRecentArticles() {
-  const since = new Date()
-  since.setUTCMonth(since.getUTCMonth() - 2)
-  since.setUTCHours(0, 0, 0, 0)
-  const { data } = await get('/articles', {
-    fields: CARD_FIELDS,
-    filters: { publishedAt: { $gte: since.toISOString() } },
-    sort: ['publishedAt:desc'],
-    pagination: { pageSize: 100 },
-  })
-  return data
-}
-
 // One page of posts. q matches title or description; sort is 'date' (newest first) or 'category'.
 // withBody adds the markdown body (for cards that show an excerpt of it).
 export async function getArticles({ q = '', category = '', sort = 'date', page = 1, pageSize = PAGE_SIZE, withBody = false } = {}) {

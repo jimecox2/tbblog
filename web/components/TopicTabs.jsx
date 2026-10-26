@@ -1,8 +1,8 @@
 'use client'
-// "Explore by topic" on /home1: one tab per category, each showing that category's latest posts.
+// "Explore by topic" on the home page: one tab per category, each showing that category's latest posts.
 // Every tab's posts come from the server at once, so switching tabs needs no request.
 import { useState } from 'react'
-import Home1Card from '@/components/home1/Home1Card'
+import PostCard from '@/components/PostCard'
 
 export default function TopicTabs({ topics }) {
   const [active, setActive] = useState(topics.find(t => t.posts.length)?.category || topics[0]?.category)
@@ -34,7 +34,7 @@ export default function TopicTabs({ topics }) {
         <h3 className="text-xl font-semibold text-gray-900">{current?.category}</h3>
         {current?.posts.length ? (
           <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {current.posts.map(p => <Home1Card key={p.id} post={p} />)}
+            {current.posts.map(p => <PostCard key={p.id} post={p} />)}
           </div>
         ) : (
           <p className="mt-4 text-gray-500">No posts in this topic yet.</p>
