@@ -7,23 +7,13 @@ import Home1Card from '@/components/home1/Home1Card'
 import TopicTabs from '@/components/home1/TopicTabs'
 import { PostCount, PostFilterForm, PostPager, readFilters } from '@/components/PostFilters'
 import { CATEGORIES } from '@/lib/categories'
-import { excerpt } from '@/lib/excerpt'
-import { articleHref, getArticles } from '@/lib/strapi'
+import { toCardPost as toPost } from '@/lib/cardPost'
+import { getArticles } from '@/lib/strapi'
 
 export const metadata = { title: 'Home 1' }
 
 const BASE = '/home1'
 const HASH = '#all-posts'
-
-// What a card needs, with the body cut down here so the full text never goes to the browser.
-const toPost = max => a => ({
-  id: a.documentId,
-  href: articleHref(a),
-  title: a.title,
-  category: a.category,
-  publishedAt: a.publishedAt,
-  summary: excerpt(a.body, max),
-})
 
 export default async function Home1Page({ searchParams }) {
   const filters = readFilters(searchParams)
