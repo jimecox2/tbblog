@@ -34,9 +34,18 @@ export default async function PostsPage({ searchParams }) {
 
   return (
     <div>
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-tbBlue">All Posts</h1>
+      <div className="bg-gray-100 mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+
+         <header>
+          <p className="mt-3 text-lg text-gray-800">
+            <strong>All Posts by Category:</strong> Solve your agile, project, portfolio and resource
+            management problems. Learn about Timebars Ltd. software products and AI integration 
+            achievements that improve productivity.
+          </p>
+        </header>
+
         <div className="mt-6">
+
           <PostFilterForm basePath={BASE} q={q} category={category} />
         </div>
         {!bands.length && <p className="mt-8 text-gray-500">No posts match.</p>}

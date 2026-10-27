@@ -46,8 +46,6 @@ export default async function HomePage() {
               )}
             </section>
 
-
-
             <section className="mt-16" aria-labelledby="explore-by-topic">
               <h2 id="explore-by-topic" className="text-3xl font-bold tracking-tight text-gray-900">Explore by topic</h2>
               <p className="mt-1 text-gray-600">Find posts based on your interests and expertise.</p>
@@ -61,9 +59,6 @@ export default async function HomePage() {
                 See All Posts by Category →
               </Link>
             </div>
-
-
-
 
           </div>
 

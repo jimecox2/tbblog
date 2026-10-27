@@ -108,20 +108,20 @@ export default function BlogSidebar() {
       <AuthorBio />
 
       <div className="mt-8 flex justify-center">
-                <a
+        <a
           href="https://ab.timebars.com"
           title="Take a look at Agilebars Sprint Scheduler"
           target="_blank"
           rel="noopener noreferrer"
           className="block w-full max-w-md transition hover:opacity-90"
         >
-        <Image
-          src="/images/agilebars-shout-out.png"
-          alt="Agilebars shout out"
-          width={1173}
-          height={231}
-          className="h-auto w-full max-w-sm rounded-lg shadow"
-        />
+          <Image
+            src="/images/agilebars-shout-out.png"
+            alt="Agilebars shout out"
+            width={1173}
+            height={231}
+            className="h-auto w-full max-w-sm rounded-lg shadow"
+          />
         </a>
       </div>
 
