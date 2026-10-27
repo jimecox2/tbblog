@@ -34,7 +34,7 @@ export default async function PostsPage({ searchParams }) {
 
   return (
     <div>
-      <div className="bg-gray-100 mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="bg-gradient-to-b from-[#eef1fb] via-[#f5f6fc] to-white mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
 
          <header>
           <p className="mt-3 text-lg text-gray-800">

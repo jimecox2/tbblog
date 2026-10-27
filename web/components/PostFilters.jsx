@@ -14,7 +14,7 @@ export function readFilters(searchParams) {
 
 export function PostFilterForm({ basePath, q, category }) {
   return (
-    <form action={basePath} className="flex flex-wrap gap-3 rounded-lg bg-gray-100 p-4 shadow-sm">
+    <form action={basePath} className="flex flex-wrap gap-3 rounded-lg bg-gradient-to-b from-[#eef1fb] via-[#f5f6fc] to-white p-4 shadow-sm">
       <input
         type="search"
         name="q"
