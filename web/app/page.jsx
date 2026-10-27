@@ -24,8 +24,12 @@ export default async function HomePage() {
     <div className="bg-gradient-to-b from-[#eef1fb] via-[#f5f6fc] to-white">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <header>
-          <h1 className="text-4xl font-bold tracking-tight text-tbBlue sm:text-5xl">The Timebars Blog</h1>
-          <p className="mt-3 text-lg text-gray-600">Insights on agile, project, portfolio and resource management.</p>
+          {/* <h1 className="text-4xl font-bold tracking-tight text-tbBlue sm:text-5xl">The Timebars Blog</h1> */}
+          <p className="mt-3 text-lg text-gray-600">
+            <strong>The Timebars Blog</strong> provides problem solving insights on agile, project, portfolio and resource
+            management. We also talk about Timebars Ltd. software products and AI integration achievements that improve
+            productivity.
+          </p>
         </header>
 
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
