@@ -2,7 +2,7 @@
 // (the same list as /learn on the Timebars Ltd. site), and a short bio. Each box is one post card wide.
 // The text lives here on purpose; edit it freely.
 import { WWW_URL } from '@/config/site'
-
+import Image from 'next/image'
 // From the "The problem you have" list in tbwww components/Learn/learnNav.js
 const PROBLEMS = [
   { slug: 'the-it-demand-backlog-problem', label: 'Hundreds of requests, one delivery team' },
@@ -70,8 +70,61 @@ export function AuthorBio() {
 export default function BlogSidebar() {
   return (
     <aside className="space-y-6" aria-label="About this blog">
+      <div className="mt-8 flex justify-center">
+        <a
+          href="https://tb.timebars.com"
+          title="Take a look at Timebars Resource Scheduler"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full max-w-md transition hover:opacity-90"
+        >
+          <Image
+            src="/images/timebars-shout-out.png"
+            alt="Timebars shout out"
+            width={1378}
+            height={226}
+            className="h-auto w-full max-w-sm rounded-lg shadow"
+          />
+        </a>
+      </div>
       <AboutThisBlog />
+      <div className="mt-8 flex justify-center">
+        <a
+          href="https://cb.timebars.com"
+          title="Take a look at Costbars Project Portfolio Scheduler"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full max-w-md transition hover:opacity-90"
+        >
+          <Image
+            src="/images/costbars-shout-out.png"
+            alt="Costbars shout out"
+            width={1504}
+            height={226}
+            className="h-auto w-full max-w-sm rounded-lg shadow"
+          />
+        </a>
+      </div>
       <AuthorBio />
+
+      <div className="mt-8 flex justify-center">
+                <a
+          href="https://ab.timebars.com"
+          title="Take a look at Agilebars Sprint Scheduler"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full max-w-md transition hover:opacity-90"
+        >
+        <Image
+          src="/images/agilebars-shout-out.png"
+          alt="Agilebars shout out"
+          width={1173}
+          height={231}
+          className="h-auto w-full max-w-sm rounded-lg shadow"
+        />
+        </a>
+      </div>
+
     </aside>
   )
 }

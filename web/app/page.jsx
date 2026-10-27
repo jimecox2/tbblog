@@ -10,6 +10,7 @@ import TopicTabs from '@/components/TopicTabs'
 import { CATEGORIES } from '@/lib/categories'
 import { toCardPost as toPost } from '@/lib/cardPost'
 import { getArticles } from '@/lib/strapi'
+import Image from 'next/image'
 
 export default async function HomePage() {
   const [latest, topics] = await Promise.all([
@@ -45,6 +46,8 @@ export default async function HomePage() {
               )}
             </section>
 
+
+
             <section className="mt-16" aria-labelledby="explore-by-topic">
               <h2 id="explore-by-topic" className="text-3xl font-bold tracking-tight text-gray-900">Explore by topic</h2>
               <p className="mt-1 text-gray-600">Find posts based on your interests and expertise.</p>
@@ -54,10 +57,14 @@ export default async function HomePage() {
             </section>
 
             <div className="mt-12">
-              <Link href="/posts" className="inline-flex items-center gap-2 rounded-full bg-tbBlue px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(37,25,204,0.25)] transition hover:-translate-y-0.5 hover:bg-blue-800">
-                All Posts by Category →
+              <Link href="/posts" className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(37,25,204,0.25)] transition hover:-translate-y-0.5 hover:bg-blue-800">
+                See All Posts by Category →
               </Link>
             </div>
+
+
+
+
           </div>
 
           <BlogSidebar />
